@@ -6,13 +6,18 @@
  * Time: 16.48
  */
 define('PAGE_SIZE',6);
+if(isset($_GET['page'])){
+    $pageToDisplay=(int)$_GET['page'];
+} else{
+    $pageToDisplay=1;
+}
 function paginator($numberOfPages,$currentPage=1){
     $htmlPaginator='<ul>';                          //here can add class= for bootstrap
     for ($i=1; $i<=$numberOfPages; $i++){       //add links
         if($i==$currentPage){
             $htmlPaginator.="<li class=\"selected\">$i</li>";
         } else{
-            $htmlPaginator.="<li>$i</li>";
+            $htmlPaginator.='<li><a href="?page='.$i.'">'.$i.'</a></li>';
         }
     }
     $htmlPaginator.='</ul>';
@@ -51,7 +56,7 @@ function getNumberOfPages($storageSize,$itemsPerPage=PAGE_SIZE){
 }
 
 $allItems=getItemsAll();
-$itemsForDefinitePage=getItemsForDefinitePage($allItems);
+$itemsForDefinitePage=getItemsForDefinitePage($allItems,$pageToDisplay);
 $htmlPage=generatePageToDisplay($itemsForDefinitePage);
 
 
